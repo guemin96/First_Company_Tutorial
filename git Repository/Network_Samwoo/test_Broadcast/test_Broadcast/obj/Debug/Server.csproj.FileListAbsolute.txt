@@ -1,0 +1,6 @@
+D:\Samwoo_Work\Network_Samwoo\test_Broadcast\test_Broadcast\bin\Debug\test_Broadcast.exe.config
+D:\Samwoo_Work\Network_Samwoo\test_Broadcast\test_Broadcast\bin\Debug\test_Broadcast.exe
+D:\Samwoo_Work\Network_Samwoo\test_Broadcast\test_Broadcast\bin\Debug\test_Broadcast.pdb
+D:\Samwoo_Work\Network_Samwoo\test_Broadcast\test_Broadcast\obj\Debug\Server.csproj.CoreCompileInputs.cache
+D:\Samwoo_Work\Network_Samwoo\test_Broadcast\test_Broadcast\obj\Debug\test_Broadcast.exe
+D:\Samwoo_Work\Network_Samwoo\test_Broadcast\test_Broadcast\obj\Debug\test_Broadcast.pdb

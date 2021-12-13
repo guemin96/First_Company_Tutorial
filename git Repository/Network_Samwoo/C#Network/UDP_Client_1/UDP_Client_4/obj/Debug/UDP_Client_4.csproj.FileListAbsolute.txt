@@ -1,0 +1,6 @@
+D:\Samwoo_Work\Network_Samwoo\C#Network\UDP_Client_1\UDP_Client_4\bin\Debug\UDP_Client_4.exe.config
+D:\Samwoo_Work\Network_Samwoo\C#Network\UDP_Client_1\UDP_Client_4\bin\Debug\UDP_Client_4.exe
+D:\Samwoo_Work\Network_Samwoo\C#Network\UDP_Client_1\UDP_Client_4\bin\Debug\UDP_Client_4.pdb
+D:\Samwoo_Work\Network_Samwoo\C#Network\UDP_Client_1\UDP_Client_4\obj\Debug\UDP_Client_4.csproj.CoreCompileInputs.cache
+D:\Samwoo_Work\Network_Samwoo\C#Network\UDP_Client_1\UDP_Client_4\obj\Debug\UDP_Client_4.exe
+D:\Samwoo_Work\Network_Samwoo\C#Network\UDP_Client_1\UDP_Client_4\obj\Debug\UDP_Client_4.pdb

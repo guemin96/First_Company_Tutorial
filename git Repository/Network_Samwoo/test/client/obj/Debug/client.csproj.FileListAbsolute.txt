@@ -1,0 +1,6 @@
+D:\Samwoo_Work\Network_Samwoo\test\client\obj\Debug\client.csproj.CoreCompileInputs.cache
+D:\Samwoo_Work\Network_Samwoo\test\client\bin\Debug\client.exe.config
+D:\Samwoo_Work\Network_Samwoo\test\client\bin\Debug\client.exe
+D:\Samwoo_Work\Network_Samwoo\test\client\bin\Debug\client.pdb
+D:\Samwoo_Work\Network_Samwoo\test\client\obj\Debug\client.exe
+D:\Samwoo_Work\Network_Samwoo\test\client\obj\Debug\client.pdb

@@ -1,0 +1,10 @@
+D:\Samwoo_Work\Network_Samwoo\Client_Samwoo\Client_Samwoo\bin\Debug\Client_Samwoo.exe.config
+D:\Samwoo_Work\Network_Samwoo\Client_Samwoo\Client_Samwoo\bin\Debug\Client_Samwoo.exe
+D:\Samwoo_Work\Network_Samwoo\Client_Samwoo\Client_Samwoo\bin\Debug\Client_Samwoo.pdb
+D:\Samwoo_Work\Network_Samwoo\Client_Samwoo\Client_Samwoo\obj\Debug\Client_Samwoo.csproj.AssemblyReference.cache
+D:\Samwoo_Work\Network_Samwoo\Client_Samwoo\Client_Samwoo\obj\Debug\Client_Samwoo.Properties.Resources.resources
+D:\Samwoo_Work\Network_Samwoo\Client_Samwoo\Client_Samwoo\obj\Debug\Client_Samwoo.csproj.GenerateResource.cache
+D:\Samwoo_Work\Network_Samwoo\Client_Samwoo\Client_Samwoo\obj\Debug\Client_Samwoo.csproj.CoreCompileInputs.cache
+D:\Samwoo_Work\Network_Samwoo\Client_Samwoo\Client_Samwoo\obj\Debug\Client_Samwoo.exe
+D:\Samwoo_Work\Network_Samwoo\Client_Samwoo\Client_Samwoo\obj\Debug\Client_Samwoo.pdb
+D:\Samwoo_Work\Network_Samwoo\Client_Samwoo\Client_Samwoo\obj\Debug\Client_Samwoo.Client.resources

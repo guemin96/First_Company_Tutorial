@@ -1,0 +1,7 @@
+D:\Samwoo_Work\Design_Samwoo\DesignPattern\BookStore\bin\Debug\BookStore.exe.config
+D:\Samwoo_Work\Design_Samwoo\DesignPattern\BookStore\bin\Debug\BookStore.exe
+D:\Samwoo_Work\Design_Samwoo\DesignPattern\BookStore\bin\Debug\BookStore.pdb
+D:\Samwoo_Work\Design_Samwoo\DesignPattern\BookStore\obj\Debug\BookStore.csproj.AssemblyReference.cache
+D:\Samwoo_Work\Design_Samwoo\DesignPattern\BookStore\obj\Debug\BookStore.csproj.CoreCompileInputs.cache
+D:\Samwoo_Work\Design_Samwoo\DesignPattern\BookStore\obj\Debug\BookStore.exe
+D:\Samwoo_Work\Design_Samwoo\DesignPattern\BookStore\obj\Debug\BookStore.pdb

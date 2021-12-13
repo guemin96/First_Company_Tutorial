@@ -1,0 +1,7 @@
+D:\Samwoo_Work\Network_Samwoo\SocketNetwork_1\MyClient\bin\Debug\MyClient.exe.config
+D:\Samwoo_Work\Network_Samwoo\SocketNetwork_1\MyClient\bin\Debug\MyClient.exe
+D:\Samwoo_Work\Network_Samwoo\SocketNetwork_1\MyClient\bin\Debug\MyClient.pdb
+D:\Samwoo_Work\Network_Samwoo\SocketNetwork_1\MyClient\obj\Debug\MyClient.csproj.AssemblyReference.cache
+D:\Samwoo_Work\Network_Samwoo\SocketNetwork_1\MyClient\obj\Debug\MyClient.csproj.CoreCompileInputs.cache
+D:\Samwoo_Work\Network_Samwoo\SocketNetwork_1\MyClient\obj\Debug\MyClient.exe
+D:\Samwoo_Work\Network_Samwoo\SocketNetwork_1\MyClient\obj\Debug\MyClient.pdb

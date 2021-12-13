@@ -1,0 +1,7 @@
+D:\Samwoo_Work\Network_Samwoo\ConsoleNetwork\ChattingServer\bin\Debug\ChattingServer.exe.config
+D:\Samwoo_Work\Network_Samwoo\ConsoleNetwork\ChattingServer\bin\Debug\ChattingServer.exe
+D:\Samwoo_Work\Network_Samwoo\ConsoleNetwork\ChattingServer\bin\Debug\ChattingServer.pdb
+D:\Samwoo_Work\Network_Samwoo\ConsoleNetwork\ChattingServer\obj\Debug\ChattingServer.csproj.AssemblyReference.cache
+D:\Samwoo_Work\Network_Samwoo\ConsoleNetwork\ChattingServer\obj\Debug\ChattingServer.csproj.CoreCompileInputs.cache
+D:\Samwoo_Work\Network_Samwoo\ConsoleNetwork\ChattingServer\obj\Debug\ChattingServer.exe
+D:\Samwoo_Work\Network_Samwoo\ConsoleNetwork\ChattingServer\obj\Debug\ChattingServer.pdb

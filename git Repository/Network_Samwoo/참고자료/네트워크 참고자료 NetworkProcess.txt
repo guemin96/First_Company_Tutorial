@@ -1,0 +1,371 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace MySimpleChat
+{
+    static class Constants//주소들 모음
+    {
+        public const string OWN_ADDRESS = "192.168.0.111";//내IP주소
+        public const int BROADCAST_PORT = 35250;//브로드캐스트 포트
+        public const int UNICAST_PORT = 35251;//유니캐스트 포트
+        public const string MULTICAST_ADDRESS = "239.100.100.100";//멀티캐스트 주소
+        public const int MULTICAST_PORT = 35252;//멀티캐스트 포트
+    }
+
+    static class CommonProcess
+    {
+        public static bool Start(out string targetAddress, out int targetPort, int broadcastPort = Constants.BROADCAST_PORT)//서버체크
+        {
+            targetAddress = null;
+            targetPort = -1;
+
+            string ownAddress = Constants.OWN_ADDRESS; //temporal
+            bool isServerMode = false;
+
+            UdpClient bSocket = new UdpClient();
+            bSocket.Client.ReceiveTimeout = 5000;
+            bSocket.Client.Bind(new IPEndPoint(IPAddress.Any, broadcastPort));
+
+            NetworkPacket tAliveCheck = NetworkPacket.MakeAliveCheckPacket();
+            bSocket.Send(tAliveCheck.GetBytes(), tAliveCheck.GetLength(), "255.255.255.255", broadcastPort);
+
+            try
+            {
+                while (true)
+                {
+                    IPEndPoint rEP = new IPEndPoint(IPAddress.Any, 0);
+                    byte[] rData = bSocket.Receive(ref rEP);
+
+                    if (rEP.Address.ToString() == ownAddress)
+                    {
+                        continue;
+                    }
+
+                    if (NetworkPacket.ParseServerResponsePacket(new NetworkPacket(rData), out IPAddress tAddress, out targetPort))
+                    {
+                        targetAddress = tAddress.ToString();
+                        isServerMode = false; // 클라이언트 모드
+
+                        break;
+                    }
+                }
+            }
+            catch (SocketException ex)
+            {
+                if (ex.ErrorCode != 10060) //5초동안 값이 안들어오면
+                {
+                    throw;
+                }
+
+                isServerMode = true; //서버모드로 실행
+            }
+            finally
+            {
+                if (bSocket != null)
+                {
+                    bSocket.Close();
+                }
+            }
+
+            return isServerMode; //bool 리턴
+        }
+    }
+
+    static class ServerMode
+    {
+        private static int mBroadcastPort;
+        private static int mUnicastPort;
+        private static string mMulticastAddress;
+        private static int mMulticastPort;
+
+        private static string mName;
+
+        private static bool mIsThreadAborted;
+        private static Thread mServerThread;
+        private static Thread mSignalingThread;
+
+        private static List<string> mChatLog;
+
+        private static object mLockObject;
+
+        //매개변수로 이전 입력값을 받아서.
+        public static void Start(string name, int broadcastPort = Constants.BROADCAST_PORT, int unicastPort = Constants.UNICAST_PORT, string multicastAddress = Constants.MULTICAST_ADDRESS, int multicastPort = Constants.MULTICAST_PORT)
+        {
+            mName = name;
+            mBroadcastPort = broadcastPort;
+            mUnicastPort = unicastPort;
+            mMulticastAddress = multicastAddress;
+            mMulticastPort = multicastPort;
+
+            mChatLog = new List<string>();
+
+            mLockObject = new object();
+
+            mIsThreadAborted = false;
+            mServerThread = new Thread(() => ServerProcess());
+            mSignalingThread = new Thread(() => SignalingProcess());
+
+            mServerThread.Start();
+            mSignalingThread.Start();
+        }
+
+        //쓰레드 종료
+        public static void Abort()
+        {
+            mIsThreadAborted = true;
+            mServerThread.Abort();
+            mSignalingThread.Abort();
+        }
+
+        //메세지 클라이언트 이름이랑 메세지를 보냄.
+        public static void SendOwnChatMessage(string message)
+        {
+            lock(mLockObject)
+            {
+                UdpClient udp = new UdpClient();
+                NetworkPacket tPacket = NetworkPacket.MakeChatMessagePacket(string.Format("<{0}> {1}", mName, message));
+
+                udp.Send(tPacket.GetBytes(), tPacket.GetLength(), mMulticastAddress, mMulticastPort);
+
+                udp.Close();
+            }
+        }
+
+        //alive check
+        private static void SignalingProcess()
+        {
+            UdpClient udp = new UdpClient();
+            udp.Client.Bind(new IPEndPoint(IPAddress.Any, mBroadcastPort));
+            
+            string ownAddress = Constants.OWN_ADDRESS; //temporal
+
+            //쓰레드가 안 닫혀있을 때
+            while (!mIsThreadAborted)
+            {
+                try
+                {
+                    IPEndPoint rEP = new IPEndPoint(IPAddress.Any, 0);
+                    //브로드캐스트에서 받음.
+                    byte[] rData = udp.Receive(ref rEP);
+
+                    //내가 보낸 걸 내가 받았는지 확인.
+                    if (rEP.Address.ToString() == ownAddress)
+                    {
+                        continue;
+                    }
+
+                    NetworkPacket rPacket = new NetworkPacket(rData);
+                    
+                    //type이 alivecheck라면
+                    if(rPacket.mPacketType == PacketType.AliveCheck)
+                    {
+                        //브로드캐스트로 보낸다.
+                        NetworkPacket sPacket = NetworkPacket.MakeServerResponsePacket(IPAddress.Parse(ownAddress), mUnicastPort);
+                        udp.Send(sPacket.GetBytes(), sPacket.GetLength(), "255.255.255.255", mBroadcastPort);
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            //소켓 닫기
+            udp.Close();
+        }
+
+        private static void ServerProcess()
+        {
+            UdpClient udp = new UdpClient();
+            IPEndPoint mEP = new IPEndPoint(IPAddress.Parse(mMulticastAddress), mMulticastPort);
+
+            udp.Client.Bind(new IPEndPoint(IPAddress.Any, mUnicastPort));
+
+            while(!mIsThreadAborted)
+            {
+                try
+                {
+                    IPEndPoint rEP = new IPEndPoint(IPAddress.Any, 0);
+                    byte[] rData = udp.Receive(ref rEP);
+
+                    NetworkPacket rPacket = new NetworkPacket(rData);
+
+                    switch (rPacket.mPacketType)
+                    {
+                        //클라이언트 모드일 때
+                        //패킷으로 변환해서 multi로 던짐.
+                        case PacketType.ClientConnected:
+                            {
+                                NetworkPacket tPacket = NetworkPacket.MakeInitializeDataPacket(IPAddress.Parse(mMulticastAddress), mMulticastPort);
+                                udp.Send(tPacket.GetBytes(), tPacket.GetLength(), rEP.Address.ToString(), mUnicastPort);
+
+                                //채팅 로그가 있는지 판별
+                                if(mChatLog.Count > 0)
+                                {
+                                    int cnt = 1;
+
+                                    while(true)
+                                    {
+                                        NetworkPacket cPacket = NetworkPacket.MakeChatMessagePacket(mChatLog[mChatLog.Count - cnt++]);
+                                        udp.Send(cPacket.GetBytes(), cPacket.GetLength(), rEP.Address.ToString(), mUnicastPort);
+
+                                        //최근 로그 100개 불러옴.
+                                        if ((cnt > 100) || (mChatLog.Count - cnt) < 0)
+                                        {
+                                            break;
+                                        }
+
+                                        //Thread.Sleep(25);
+                                    }
+                                }
+
+                                break;
+                            }
+                        //내 메세지(서버)를 서버로 보냄.
+                        case PacketType.ChatMessage:
+                            {
+                                //로그 저장 / send
+                                NetworkPacket.ParseChatMessagePacket(rPacket, out string tMessage);
+                                mChatLog.Add(tMessage);
+                                //print, yet
+                                udp.Send(rPacket.GetBytes(), rPacket.GetLength(), mEP);
+
+                                break;
+                            }
+                        default:
+                            break;
+                    }
+
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+
+            udp.Close();
+        }
+    }
+
+    static class ClientMode
+    {
+        private static string mName;
+        private static string mUnicastAddress;
+        private static int mUnicastPort;
+        private static string mMulticastAddress;
+        private static int mMulticastPort;
+
+        private static object mLockObject;
+
+        private static bool mIsThreadAborted;
+        private static Thread mClientThread;
+
+        public static void Start(string name, string targetAddress, int targetPort)
+        {
+            mName = name;
+            mUnicastAddress = targetAddress;
+            mUnicastPort = targetPort;
+            mIsThreadAborted = false;
+
+            mLockObject = new object();
+
+            UdpClient udp = new UdpClient();
+            IPEndPoint sEP = new IPEndPoint(IPAddress.Parse(mUnicastAddress), mUnicastPort);
+
+            udp.Client.Bind(sEP);
+
+            NetworkPacket sPacket = NetworkPacket.MakeClientConnectedPacket();
+            udp.Send(sPacket.GetBytes(), sPacket.GetLength(), sEP);
+
+            while(true)
+            {
+                IPEndPoint rEP = new IPEndPoint(IPAddress.Any, 0);
+                byte[] rData = udp.Receive(ref rEP);
+
+                try
+                {
+                    NetworkPacket rPacket = new NetworkPacket(rData);
+
+                    //패킷 송신
+                    if (NetworkPacket.ParseInitializeDataPacket(rPacket, out IPAddress address, out int port))
+                    {
+                        mMulticastAddress = address.ToString();
+                        mMulticastPort = port;
+                    }
+
+                    //패킷 수신
+                    if (NetworkPacket.ParseChatMessagePacket(rPacket, out string message))
+                    {
+                        //구현안됨.
+                        //print, yet
+                    }
+                }
+                catch (SocketException ex)
+                {
+                        throw;
+                }
+                finally
+                {
+                    if (udp != null)
+                    {
+                        udp.Close();
+                    }
+                }
+            }
+
+            mClientThread = new Thread(() => ClientProcess());
+            mClientThread.Start();
+        }
+
+        public static void Abort()
+        {
+            mIsThreadAborted = true;
+            mClientThread.Abort();
+        }
+
+        public static void SendOwnChatMessage(string message)
+        {
+            lock (mLockObject)
+            {
+                //클라이언트모드에서 서버로 내가 쓴 메세지를 보냄.
+                UdpClient udp = new UdpClient();
+                NetworkPacket tPacket = NetworkPacket.MakeChatMessagePacket(string.Format("<{0}> {1}", mName, message));
+
+                udp.Send(tPacket.GetBytes(), tPacket.GetLength(), mMulticastAddress, mMulticastPort);
+
+                udp.Close();
+            }
+        }
+
+        private static void ClientProcess()
+        {
+            UdpClient udp = new UdpClient();
+            IPEndPoint mEP = new IPEndPoint(IPAddress.Any, mMulticastPort);
+            
+            udp.Client.Bind(mEP);
+            //그룹에 가입
+            udp.JoinMulticastGroup(IPAddress.Parse(mMulticastAddress));
+
+            while(!mIsThreadAborted)
+            {
+                IPEndPoint rEP = new IPEndPoint(IPAddress.Any, 0);
+                byte[] rData = udp.Receive(ref rEP);
+
+                //메세지 받아옴.
+                if(NetworkPacket.ParseChatMessagePacket(new NetworkPacket(rData), out string message))
+                {
+                    //print, yet
+                    //구현 안됨.
+                    //만약 true라면
+                    //{리스트에서 출력.}
+                }
+            }
+        }
+    }
+}

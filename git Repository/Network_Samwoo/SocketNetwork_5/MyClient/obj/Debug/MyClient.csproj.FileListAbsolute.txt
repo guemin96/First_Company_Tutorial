@@ -1,0 +1,2 @@
+D:\Samwoo_Work\Network_Samwoo\SocketNetwork_5\MyClient\obj\Debug\MyClient.csproj.AssemblyReference.cache
+D:\Samwoo_Work\Network_Samwoo\SocketNetwork_5\MyClient\obj\Debug\MyClient.csproj.CoreCompileInputs.cache

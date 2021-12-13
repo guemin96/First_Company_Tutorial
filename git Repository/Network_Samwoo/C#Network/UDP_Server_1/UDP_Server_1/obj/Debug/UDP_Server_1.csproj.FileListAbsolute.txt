@@ -1,0 +1,7 @@
+D:\Samwoo_Work\Network_Samwoo\C#Network\UDP_Server_1\UDP_Server_1\bin\Debug\UDP_Server_1.exe.config
+D:\Samwoo_Work\Network_Samwoo\C#Network\UDP_Server_1\UDP_Server_1\bin\Debug\UDP_Server_1.exe
+D:\Samwoo_Work\Network_Samwoo\C#Network\UDP_Server_1\UDP_Server_1\bin\Debug\UDP_Server_1.pdb
+D:\Samwoo_Work\Network_Samwoo\C#Network\UDP_Server_1\UDP_Server_1\obj\Debug\UDP_Server_1.csproj.AssemblyReference.cache
+D:\Samwoo_Work\Network_Samwoo\C#Network\UDP_Server_1\UDP_Server_1\obj\Debug\UDP_Server_1.csproj.CoreCompileInputs.cache
+D:\Samwoo_Work\Network_Samwoo\C#Network\UDP_Server_1\UDP_Server_1\obj\Debug\UDP_Server_1.exe
+D:\Samwoo_Work\Network_Samwoo\C#Network\UDP_Server_1\UDP_Server_1\obj\Debug\UDP_Server_1.pdb

@@ -1,0 +1,10 @@
+D:\Samwoo_Work\Network_Samwoo\C#Network\Network_project\Network_project\bin\Debug\Network_project.exe.config
+D:\Samwoo_Work\Network_Samwoo\C#Network\Network_project\Network_project\bin\Debug\Network_project.exe
+D:\Samwoo_Work\Network_Samwoo\C#Network\Network_project\Network_project\bin\Debug\Network_project.pdb
+D:\Samwoo_Work\Network_Samwoo\C#Network\Network_project\Network_project\obj\Debug\Network_project.csproj.AssemblyReference.cache
+D:\Samwoo_Work\Network_Samwoo\C#Network\Network_project\Network_project\obj\Debug\Network_project.Form1.resources
+D:\Samwoo_Work\Network_Samwoo\C#Network\Network_project\Network_project\obj\Debug\Network_project.Properties.Resources.resources
+D:\Samwoo_Work\Network_Samwoo\C#Network\Network_project\Network_project\obj\Debug\Network_project.csproj.GenerateResource.cache
+D:\Samwoo_Work\Network_Samwoo\C#Network\Network_project\Network_project\obj\Debug\Network_project.csproj.CoreCompileInputs.cache
+D:\Samwoo_Work\Network_Samwoo\C#Network\Network_project\Network_project\obj\Debug\Network_project.exe
+D:\Samwoo_Work\Network_Samwoo\C#Network\Network_project\Network_project\obj\Debug\Network_project.pdb

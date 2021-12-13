@@ -1,0 +1,10 @@
+D:\Samwoo_Work\Network_Samwoo\2021_12_10\WinForm_Net\Client_2\obj\Debug\Client_2.Form1.resources
+D:\Samwoo_Work\Network_Samwoo\2021_12_10\WinForm_Net\Client_2\obj\Debug\Client_2.csproj.GenerateResource.cache
+D:\Samwoo_Work\Network_Samwoo\2021_12_10\WinForm_Net\Client_2\obj\Debug\Client_2.csproj.CoreCompileInputs.cache
+D:\Samwoo_Work\Network_Samwoo\2021_12_10\WinForm_Net\Client_2\bin\Debug\Client_2.exe.config
+D:\Samwoo_Work\Network_Samwoo\2021_12_10\WinForm_Net\Client_2\bin\Debug\Client_2.exe
+D:\Samwoo_Work\Network_Samwoo\2021_12_10\WinForm_Net\Client_2\bin\Debug\Client_2.pdb
+D:\Samwoo_Work\Network_Samwoo\2021_12_10\WinForm_Net\Client_2\obj\Debug\Client_2.csproj.AssemblyReference.cache
+D:\Samwoo_Work\Network_Samwoo\2021_12_10\WinForm_Net\Client_2\obj\Debug\Client_2.Properties.Resources.resources
+D:\Samwoo_Work\Network_Samwoo\2021_12_10\WinForm_Net\Client_2\obj\Debug\Client_2.exe
+D:\Samwoo_Work\Network_Samwoo\2021_12_10\WinForm_Net\Client_2\obj\Debug\Client_2.pdb

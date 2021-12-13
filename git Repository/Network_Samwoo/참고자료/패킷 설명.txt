@@ -1,0 +1,188 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ChatFormClient
+{
+
+    enum PacketType : byte
+    {
+        Error = 0,
+
+        AliveCheck = 1,
+        ServerResponse = 2,
+
+        ClientConnected = 50,
+        InitializeData = 51,
+
+        ChatMessage = 100
+    }
+
+    class NetworkPacket
+    {
+        #region nn
+        public static NetworkPacket MakeAliveCheckPacket() //AliveCheck
+        {
+            return new NetworkPacket(PacketType.AliveCheck, new byte[0]);
+        }
+
+        public static NetworkPacket MakeServerResponsePacket(string serverAddress, int serverPort) //ServerResponse
+        {
+            List<byte> tData = new List<byte>();
+
+            string[] tAddress = serverAddress.Split('.'); //"123.456.789.012" -> { 123, 456, 789, 012 }
+
+            foreach (var item in tAddress)
+            {
+                tData.Add(byte.Parse(item));
+            }
+
+            tData.AddRange(BitConverter.GetBytes(serverPort));
+
+            return new NetworkPacket(PacketType.ServerResponse, tData.ToArray());
+        }
+
+        public static NetworkPacket MakeClientConnectedPacket() //ClientConnected
+        {
+            return new NetworkPacket(PacketType.ClientConnected, new byte[0]);
+        }
+
+        public static NetworkPacket MakeInitializeDataPacket(string multicastAddress, int multicastPort) //InitializeData
+        {
+            List<byte> tData = new List<byte>();
+
+            string[] tAddress = multicastAddress.Split('.'); //"123.456.789.012" -> { 123, 456, 789, 012 }
+
+            foreach (var item in tAddress)
+            {
+                tData.Add(byte.Parse(item));
+            }
+
+            tData.AddRange(BitConverter.GetBytes(multicastPort));
+
+            return new NetworkPacket(PacketType.InitializeData, tData.ToArray());
+        }
+
+        public static NetworkPacket MakeChatMessagePacket(string name, string message) //ChatMessage
+        {
+            string tString = string.Format("<{0}> {1}", name, message);
+            return new NetworkPacket(PacketType.ChatMessage, Encoding.UTF8.GetBytes(tString));
+        } 
+        #endregion
+
+        public PacketType mPacketType { get; private set; }
+        public byte mPacketLength { get; private set; }
+        public byte[] mData { get; private set; }
+
+        //송신할 때
+        public NetworkPacket(PacketType packetType, byte[] data)
+        {
+            mPacketType = packetType;
+            mData = data;
+            mPacketLength = (byte)(data.Length + 2);
+        }
+
+        //수신할 때
+        public NetworkPacket(byte[] data)
+        {
+            mPacketType = (PacketType)data[0];
+            Array.Copy(data, 2, mData, 0, data.Length - 2);
+            mPacketLength = (byte)(mData.Length + 2);
+        }
+
+        public byte[] GetBytes()
+        {
+
+            return null;
+        }
+
+        public int GetLength()
+        {
+
+            return 0;
+        }
+    }
+
+    class test
+    {
+        private void testtest()
+        {
+            //byte[] address = new byte[4];
+            string address = "192.168.0.111";
+            int port = 4572;
+
+            // 처음에 만드려한 패킷
+            //byte[] tData = new byte[10];
+            //tData[0] = (byte)PacketType.ServerResponse;
+            //tData[1] = 10;
+            //IPAddress tAddress = IPAddress.Parse(address);
+            //Array.Copy(tAddress.GetAddressBytes(), 0, tData, 2, 4);
+            //Array.Copy(BitConverter.GetBytes(port), 0, tData, 6, 4);
+
+            ////phase 2
+            //byte[] tData2 = new byte[8];
+            //Array.Copy(tAddress.GetAddressBytes(), 0, tData2, 0, 4);
+            //Array.Copy(BitConverter.GetBytes(port), 0, tData2, 4, 4);
+            //OwnPacket tempPacket = new OwnPacket((byte)PacketType.ServerResponse, tData2);
+            //tempPacket.GetBytes();
+
+            //phase 3
+            OwnPacket.MakeServerResponsePacket(address, port).GetBytes();
+        }
+    }
+
+    class OwnPacket
+    {
+        //클래스를 바이트로 만드는 함수
+        public static OwnPacket MakeServerResponsePacket(string address, int port)
+        {
+            byte[] tData2 = new byte[8];
+            IPAddress tAddress = IPAddress.Parse(address);
+            Array.Copy(tAddress.GetAddressBytes(), 0, tData2, 0, 4);
+            // tAddress.GetAddressBytes()의 0번째 값 부터 4만큼을 tData의 0번째부터 복사     
+            Array.Copy(BitConverter.GetBytes(port), 0, tData2, 4, 4);
+
+            return new OwnPacket((byte)PacketType.ServerResponse, tData2);
+
+        }
+
+        public readonly byte packetType;
+        public readonly byte[] packetData;
+
+        public OwnPacket(byte packetType, byte[] packetData)
+        {
+            this.packetType = packetType;
+            this.packetData = packetData;
+        }
+
+        // 바이트를 클래스로 바꾸는 함수
+        public OwnPacket(byte[] data)
+        {
+            packetType = data[0];
+            packetData = new byte[data.Length - 2];
+            Array.Copy(data, 2, packetData, 0, data.Length - 2);
+        }
+
+        // 클래스를 바이트로 바꾸는 함수
+        public byte[] GetBytes()
+        {
+            byte[] tData = new byte[GetLength()];
+            tData[0] = packetType;
+            tData[1] = (byte)GetLength();
+            Array.Copy(packetData,       0,          tData,      2,      packetData.Length);
+            //         packetData의   0번째 값 부터  packetData.Length만큼을 tData의 2번째부터 복사       
+
+            return tData;// 바뀐 애
+        }
+
+        public int GetLength()
+        {
+            return packetData.Length + 2;
+        }
+
+
+    }
+}

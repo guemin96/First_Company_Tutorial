@@ -1,0 +1,7 @@
+D:\Samwoo_Work\Design_Samwoo\DesignPattern\PocketMon\bin\Debug\PocketMon.exe.config
+D:\Samwoo_Work\Design_Samwoo\DesignPattern\PocketMon\bin\Debug\PocketMon.exe
+D:\Samwoo_Work\Design_Samwoo\DesignPattern\PocketMon\bin\Debug\PocketMon.pdb
+D:\Samwoo_Work\Design_Samwoo\DesignPattern\PocketMon\obj\Debug\PocketMon.csproj.AssemblyReference.cache
+D:\Samwoo_Work\Design_Samwoo\DesignPattern\PocketMon\obj\Debug\PocketMon.csproj.CoreCompileInputs.cache
+D:\Samwoo_Work\Design_Samwoo\DesignPattern\PocketMon\obj\Debug\PocketMon.exe
+D:\Samwoo_Work\Design_Samwoo\DesignPattern\PocketMon\obj\Debug\PocketMon.pdb

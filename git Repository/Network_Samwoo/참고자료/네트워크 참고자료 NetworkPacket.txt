@@ -1,0 +1,162 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MySimpleChat
+{
+    enum PacketType : byte
+    {
+        Error = 0,
+        AliveCheck = 1,
+        ServerResponse = 2,
+        ClientConnected = 50,
+        InitializeData = 51,
+        ChatMessage = 100
+    }
+
+    class NetworkPacket
+    {
+        //alive check > 바이트로
+        public static NetworkPacket MakeAliveCheckPacket()
+        {
+            return new NetworkPacket(PacketType.AliveCheck, new byte[0]);
+        }
+
+        //alive check
+        //보낼 주소랑 포트주소 바이트에 추가.
+        public static NetworkPacket MakeServerResponsePacket(IPAddress address, int port)
+        {
+            List<byte> tData = new List<byte>();
+
+            tData.AddRange(address.GetAddressBytes());
+            tData.AddRange(BitConverter.GetBytes(port));
+
+            return new NetworkPacket(PacketType.ServerResponse, tData.ToArray());
+        }
+
+        public static bool ParseServerResponsePacket(NetworkPacket targetPacket, out IPAddress address, out int port)
+        {
+            address = null;
+            port = -1;
+
+            if (targetPacket.mPacketType != PacketType.ServerResponse)
+            {
+                return false;
+            }
+
+            byte[] tArray = new byte[4];
+
+            Array.Copy(targetPacket.mPacketData, 2, tArray, 0, 4);
+            address = new IPAddress(tArray);
+            port = BitConverter.ToInt32(targetPacket.mPacketData, 6);
+
+            return true;
+        }
+
+        public static NetworkPacket MakeClientConnectedPacket()
+        {
+            return new NetworkPacket(PacketType.ClientConnected, new byte[0]);
+        }
+
+        public static NetworkPacket MakeInitializeDataPacket(IPAddress address, int port)
+        {
+            List<byte> tData = new List<byte>();
+
+            tData.AddRange(address.GetAddressBytes());
+            tData.AddRange(BitConverter.GetBytes(port));
+
+            return new NetworkPacket(PacketType.InitializeData, tData.ToArray());
+        }
+
+        public static bool ParseInitializeDataPacket(NetworkPacket targetPacket, out IPAddress address, out int port)
+        {
+            address = null;
+            port = -1;
+
+            if (targetPacket.mPacketType != PacketType.InitializeData)
+            {
+                return false;
+            }
+
+            byte[] tArray = new byte[4];
+
+            Array.Copy(targetPacket.mPacketData, 2, tArray, 0, 4);
+            address = new IPAddress(tArray);
+            port = BitConverter.ToInt32(targetPacket.mPacketData, 6);
+
+            return true;
+        }
+
+        public static NetworkPacket MakeChatMessagePacket(string message)
+        {
+            return new NetworkPacket(PacketType.ChatMessage, Encoding.UTF8.GetBytes(message));
+        }
+
+        public static bool ParseChatMessagePacket(NetworkPacket targetPacket, out string message)
+        {
+            message = null;
+
+            if(targetPacket.mPacketType == PacketType.ChatMessage)
+            {
+                byte[] tData = new byte[targetPacket.GetLength() - 2];
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public readonly PacketType mPacketType;
+        public readonly byte[] mPacketData;
+
+        public NetworkPacket(PacketType packetType, byte[] packetData)
+        {
+            if(packetData.Length > 253)
+            {
+                mPacketType = PacketType.Error;
+                mPacketData = null;
+            }
+            else
+            {
+                mPacketType = packetType;
+                mPacketData = packetData;
+            }
+        }
+
+        public NetworkPacket(byte[] data)
+        {
+            mPacketType = (PacketType)data[0];
+            mPacketData = new byte[data.Length - 2];
+            
+            if(data.Length > 2)
+                Array.Copy(data, 2, mPacketData, 0, data.Length - 2);
+        }
+
+        public byte[] GetBytes()
+        {
+            byte tLength = (byte)this.GetLength();
+            byte[] tData = new byte[tLength];
+            
+            tData[0] = (byte)mPacketType;
+            tData[1] = tLength;
+            
+            if(tLength > 2)
+                Array.Copy(mPacketData, 0, tData, 2, mPacketData.Length - 2);
+
+            return tData;
+        }
+
+        public int GetLength()
+        {
+            if (mPacketData == null)
+            {
+                return 0; 
+            }
+
+            return mPacketData.Length + 2;
+        }
+    }
+}

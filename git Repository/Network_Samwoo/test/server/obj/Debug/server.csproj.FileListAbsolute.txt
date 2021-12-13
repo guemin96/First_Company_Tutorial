@@ -1,0 +1,7 @@
+D:\Samwoo_Work\Network_Samwoo\test\server\obj\Debug\server.csproj.AssemblyReference.cache
+D:\Samwoo_Work\Network_Samwoo\test\server\obj\Debug\server.csproj.CoreCompileInputs.cache
+D:\Samwoo_Work\Network_Samwoo\test\server\bin\Debug\server.exe.config
+D:\Samwoo_Work\Network_Samwoo\test\server\bin\Debug\server.exe
+D:\Samwoo_Work\Network_Samwoo\test\server\bin\Debug\server.pdb
+D:\Samwoo_Work\Network_Samwoo\test\server\obj\Debug\server.exe
+D:\Samwoo_Work\Network_Samwoo\test\server\obj\Debug\server.pdb

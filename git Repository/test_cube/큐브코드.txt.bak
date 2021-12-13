@@ -1,0 +1,200 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class RotationCube : MonoBehaviour
+{
+    Vector3 _Rot = new Vector3();
+    Vector3 destRot = new Vector3();
+
+    //레이저로 묶어주는 역할
+    List<Transform> m_listHitTm = new List<Transform>();
+
+    //원래 부모(Center)
+    //[SerializeField] GameObject CenterCube= new GameObject(); => 안되는 이유.. 생성자를 호출하면 안되고 변수만 설정해준다.
+    // 생성자(또는 인스턴스 필드 이니셜라이저)에서 호출할 수 없으므로 대신 Wake 또는 Start에서 호출한다. 게임 개체 'DCube'의 MonoBehaviour 'RotationCube'에서 호출됩니다.
+
+    [SerializeField] GameObject CenterCube;
+
+    Coroutine coroutine = null;
+
+    void Start()
+    {
+        _Rot = transform.eulerAngles;
+
+        //ray 생성
+        //hits = new List<RaycastHit> ();
+
+    }
+
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.U)&&gameObject.name == "UCube")
+        {
+            RaycastHit tempHit;
+            //Debug.DrawRay(transform.position, transform.forward * 100f, Color.red);
+
+            //if (Physics.Raycast(transform.position, transform.forward * 100f, out tempHit))
+            //    Debug.Log(tempHit.transform.name);
+
+            //Debug.DrawRay(transform.position, new Vector3(1, 0, 1) * 10f, Color.red);
+
+            //Debug.DrawRay(transform.position, this.transform.position + new Vector3(1, 0, 1));
+            bool isHit = Physics.Raycast(transform.position, new Vector3(1.1f, 0f, 1.1f), out tempHit, 100f);// rayCast함수(현재위치, 나아가는 방향, 맞춘 객체, 레이저의 길이)
+            if (isHit)
+            {
+                m_listHitTm.Add(tempHit.transform);
+            }
+            if (Physics.Raycast(transform.position, new Vector3(1, 0, 0), out tempHit,100f))
+            {
+                m_listHitTm.Add(tempHit.transform);
+            }
+            if(Physics.Raycast(transform.position, new Vector3(1, 0, -1), out tempHit))
+            {
+                m_listHitTm.Add(tempHit.transform);
+            }
+            if(Physics.Raycast(transform.position, new Vector3(0, 0, 1), out tempHit))
+            {
+                m_listHitTm.Add(tempHit.transform);
+            }
+            if(Physics.Raycast(transform.position, new Vector3(0, 0, -1), out tempHit))
+            {
+                m_listHitTm.Add(tempHit.transform);
+            }
+            if(Physics.Raycast(transform.position, new Vector3(-1, 0, 1), out tempHit))
+            {
+                m_listHitTm.Add(tempHit.transform);
+            }
+            if(Physics.Raycast(transform.position, new Vector3(-1, 0, 0), out tempHit))
+            {
+                m_listHitTm.Add(tempHit.transform);
+            }
+            if(Physics.Raycast(transform.position, new Vector3(-1, 0, -1), out tempHit))
+            {
+                m_listHitTm.Add(tempHit.transform);
+            }
+
+            if (m_listHitTm.Count > 0)
+            {
+                foreach (Transform hitTm in m_listHitTm)
+                {
+                    hitTm.SetParent(this.transform);
+                    //hit.collider.gameObject.transform.parent = this.transform;
+                }
+            }
+
+            destRot = _Rot + new Vector3(0, 90, 0);
+
+            if (coroutine == null) // 코루틴을 변수에 담아서 현재 코루틴이 실행되고 있을때는 실행하지 못하도록 설정해준다.
+            {
+                coroutine = StartCoroutine(Co_RotationCube());
+                //큐브조각들을 다시 원래 부모밑으로 넣어주는 역할
+                if (m_listHitTm.Count > 0)
+                {
+                    foreach (Transform hitTm2 in m_listHitTm)
+                    {
+                        hitTm2.SetParent(CenterCube.transform);
+                    }
+                }
+                m_listHitTm = null;
+            }
+
+            
+        }
+        else if (Input.GetKey(KeyCode.F) && gameObject.name == "FCube")
+        {
+            destRot = _Rot + new Vector3(-90, 0, 0);
+            StartCoroutine(Co_RotationCube());
+        }
+        else if (Input.GetKey(KeyCode.R)&&gameObject.name == "RCube")
+        {
+            destRot = _Rot + new Vector3(0, 0, 90);
+            StartCoroutine(Co_RotationCube());
+        }
+        else if (Input.GetKey(KeyCode.L) && gameObject.name == "LCube")
+        {
+            destRot = _Rot + new Vector3(0, 0, -90);
+            StartCoroutine(Co_RotationCube());
+        }
+        else if (Input.GetKey(KeyCode.B) && gameObject.name == "BCube")
+        {
+            destRot = _Rot + new Vector3(90, 0, 0);
+            StartCoroutine(Co_RotationCube());
+        }
+        else if (Input.GetKey(KeyCode.D) && gameObject.name == "DCube")
+        {
+            destRot = _Rot + new Vector3(0, -90, 0);
+            StartCoroutine(Co_RotationCube());
+        }
+    }
+
+    List<Transform> Raycube()
+    {
+        RaycastHit Hit;
+        //Debug.DrawRay(transform.position, transform.forward * 100f, Color.red);
+
+        //if (Physics.Raycast(transform.position, transform.forward * 100f, out tempHit))
+        //    Debug.Log(tempHit.transform.name);
+
+        //Debug.DrawRay(transform.position, new Vector3(1, 0, 1) * 10f, Color.red);
+
+        //Debug.DrawRay(transform.position, this.transform.position + new Vector3(1, 0, 1));
+        bool isHit = Physics.Raycast(transform.position, new Vector3(1.1f, 0f, 1.1f), out Hit, 100f);// rayCast함수(현재위치, 나아가는 방향, 맞춘 객체, 레이저의 길이)
+        if (isHit)
+        {
+            m_listHitTm.Add(Hit.transform);
+        }
+        if (Physics.Raycast(transform.position, new Vector3(1, 0, 0), out Hit, 100f))
+        {
+            m_listHitTm.Add(Hit.transform);
+        }
+        if (Physics.Raycast(transform.position, new Vector3(1, 0, -1), out Hit))
+        {
+            m_listHitTm.Add(Hit.transform);
+        }
+        if (Physics.Raycast(transform.position, new Vector3(0, 0, 1), out Hit))
+        {
+            m_listHitTm.Add(Hit.transform);
+        }
+        if (Physics.Raycast(transform.position, new Vector3(0, 0, -1), out Hit))
+        {
+            m_listHitTm.Add(Hit.transform);
+        }
+        if (Physics.Raycast(transform.position, new Vector3(-1, 0, 1), out Hit))
+        {
+            m_listHitTm.Add(Hit.transform);
+        }
+        if (Physics.Raycast(transform.position, new Vector3(-1, 0, 0), out Hit))
+        {
+            m_listHitTm.Add(Hit.transform);
+        }
+        if (Physics.Raycast(transform.position, new Vector3(-1, 0, -1), out Hit))
+        {
+            m_listHitTm.Add(Hit.transform);
+        }
+
+        return m_listHitTm;
+    }
+
+    IEnumerator Co_RotationCube()
+    {
+        float alpha = 0f;
+
+        while (alpha < 1)
+        {
+            alpha += Time.deltaTime;
+            transform.rotation = Quaternion.Lerp(Quaternion.Euler(_Rot), Quaternion.Euler(destRot), alpha);//
+            yield return new WaitForEndOfFrame();
+        }
+
+        transform.rotation = Quaternion.Euler(destRot);
+        _Rot = transform.rotation.eulerAngles;
+
+        // 원래 부모로 넣어주기
+        //
+        
+
+        coroutine = null;
+        yield break;
+    }
+}

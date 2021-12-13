@@ -1,0 +1,7 @@
+D:\Samwoo_Work\Network_Samwoo\ConsoleNetwork\ChattingClient\ChattingClient\bin\Debug\ChattingClient.exe.config
+D:\Samwoo_Work\Network_Samwoo\ConsoleNetwork\ChattingClient\ChattingClient\bin\Debug\ChattingClient.exe
+D:\Samwoo_Work\Network_Samwoo\ConsoleNetwork\ChattingClient\ChattingClient\bin\Debug\ChattingClient.pdb
+D:\Samwoo_Work\Network_Samwoo\ConsoleNetwork\ChattingClient\ChattingClient\obj\Debug\ChattingClient.csproj.AssemblyReference.cache
+D:\Samwoo_Work\Network_Samwoo\ConsoleNetwork\ChattingClient\ChattingClient\obj\Debug\ChattingClient.csproj.CoreCompileInputs.cache
+D:\Samwoo_Work\Network_Samwoo\ConsoleNetwork\ChattingClient\ChattingClient\obj\Debug\ChattingClient.exe
+D:\Samwoo_Work\Network_Samwoo\ConsoleNetwork\ChattingClient\ChattingClient\obj\Debug\ChattingClient.pdb
